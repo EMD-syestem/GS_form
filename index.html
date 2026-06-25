@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8">
+    <title>GS form</title>
+    <link rel="stylesheet" href="./style.css">
+
+  </head>
+    
+  <body>
+  <!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Permohonan Kendaraan</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  
+  <!-- SPLASH SCREEN -->
+
+<div id="splashScreen">
+
+  <div class="splash-content">
+
+    <img
+      src="https://i.postimg.cc/NMRDPgT5/GS-dispacer.jpg"
+      alt="GS Dispatcher"
+    >
+
+    <h1>
+      Selamat Datang
+    </h1>
+
+    <p>
+      Di Reservasi Kendaraan
+      <br>
+      General Service Pertamina Field Jambi
+    </p>
+
+  </div>
+
+</div>
+
+  <div class="container">
+
+    <div class="card">
+
+      <div class="header-icon">
+        <img src="https://i.postimg.cc/NMRDPgT5/GS-dispacer.jpg" alt="GS Dispatcher">
+      </div>
+
+      <h2>Form Permohonan Kendaraan</h2>
+
+      <p class="subtitle">
+        Silakan isi data permohonan kendaraan dinas
+      </p>
+
+      <form id="formPermohonan">
+
+        <div class="form-group">
+          <label for="pemohon">
+            Pemohon Kendaraan
+          </label>
+
+          <input type="text" id="pemohon" placeholder="Masukkan nama dan No handphone" required>
+        </div>
+
+        <div class="form-group">
+          <label for="tglPermohonan">
+            Tanggal Permohonan
+          </label>
+
+          <input type="date" id="tglPermohonan" required>
+        </div>
+
+        <div class="form-group">
+          <label for="tglMulai">
+            Tanggal Mulai Tugas
+          </label>
+
+          <input type="date" id="tglMulai" required>
+        </div>
+
+        <div class="form-group">
+          <label for="tglSelesai">
+            Tanggal Selesai Tugas
+          </label>
+
+          <input type="date" id="tglSelesai" required>
+        </div>
+
+        <div class="row">
+
+          <div class="form-group half">
+            <label for="jamMulai">
+              Jam Mulai Tugas
+            </label>
+
+            <input type="time" id="jamMulai" required>
+          </div>
+
+          <div class="form-group half">
+            <label for="jamSelesai">
+              Jam Selesai Tugas
+            </label>
+
+            <input type="time" id="jamSelesai" required>
+          </div>
+
+        </div>
+
+        <div class="form-group">
+          <label for="summaryPekerjaan">
+            Summary Pekerjaan / Keterangan
+          </label>
+
+          <textarea id="summaryPekerjaan" rows="4" placeholder="Masukkan deskripsi peminjaman kendaraan" required></textarea>
+        </div>
+
+        <button type="submit">
+          Simpan Permohonan
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+  
+  <!-- SUCCESS SCREEN -->
+
+<div id="successScreen">
+
+  <div class="success-content">
+
+    <img
+      src="https://i.postimg.cc/NMRDPgT5/GS-dispacer.jpg"
+      alt="GS Dispatcher"
+    >
+
+    <h1>
+      Permintaan Berhasil Dikirim
+    </h1>
+
+    <p>
+      Selamat bertugas.<br>
+      Semoga selamat sampai tujuan.<br>
+      Terima kasih.
+    </p>
+
+  </div>
+
+</div>
+
+  <script src="script.js"></script>
+
+</body>
+
+</html>
+    <script  src="./script.js"></script>
+
+  </body>
+  
+</html>

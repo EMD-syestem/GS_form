@@ -11,30 +11,16 @@ window.addEventListener("load", () => {
 
 });
 
-let isSubmitting = false;
-
 document
   .getElementById("formPermohonan")
   .addEventListener("submit", async function (e) {
 
     e.preventDefault();
 
-    if (isSubmitting) return;
-
-    isSubmitting = true;
-
-    const submitBtn =
-      document.querySelector(
-        '#formPermohonan button[type="submit"]'
-      );
-
-    submitBtn.disabled = true;
-    submitBtn.textContent = "Mengirim Permohonan...";
-
     const data = {
 
-      namaDriver: "",
-
+      namaDriver:"",
+        
       noBadge: "",
 
       fleetCode: "",
@@ -46,7 +32,7 @@ document
       tanggalPermintaan:
         document.getElementById("tglPermohonan").value,
 
-      department: "General Service",
+      department: "",
 
       statusJabatan: "",
 
@@ -105,20 +91,22 @@ document
 
         }, 7000);
 
+      } else {
+
+        alert(
+          "Gagal menyimpan data: " +
+          (result.error || "")
+        );
+
       }
 
     } catch (error) {
 
-      alert("Gagal mengirim data");
-
       console.error(error);
 
-    } finally {
-
-      submitBtn.disabled = false;
-      submitBtn.textContent = "Simpan Permohonan";
-
-      isSubmitting = false;
+      alert(
+        "Tidak dapat terhubung ke server."
+      );
 
     }
 

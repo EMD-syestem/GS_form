@@ -79,7 +79,7 @@ document
     try {
 
       const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbwRP_MVnZkB_O0LBi1iYtQwJ1cNADmxmXVr6X-oAfy_1I0E4GR8ZU0YEYlC3G18xjKC5Q/exec",
+        "https://script.google.com/macros/s/AKfycbzVfz2--NNW5j4DerQtkhrX3zarQkUoHyPnyqYZUJIQ3ALVEXWNY2gBG6XtOnQfrrbx/exec",
         {
           method: "POST",
           body: JSON.stringify(data)
@@ -163,7 +163,7 @@ async function cekReservasi() {
       .value
       .trim();
 
-  if (nama === "") {
+  if (!nama) {
     alert("Masukkan nama pemohon.");
     return;
   }
@@ -181,62 +181,47 @@ async function cekReservasi() {
     // ==========================
 
     const response = await fetch(
-      "https://script.google.com/macros/s/AKfycbwRP_MVnZkB_O0LBi1iYtQwJ1cNADmxmXVr6X-oAfy_1I0E4GR8ZU0YEYlC3G18xjKC5Q/exec?action=search&nama=" +
+      "https://script.google.com/macros/s/AKfycbzVfz2--NNW5j4DerQtkhrX3zarQkUoHyPnyqYZUJIQ3ALVEXWNY2gBG6XtOnQfrrbx/exec?action=search&nama=" +
       encodeURIComponent(nama)
     );
 
     const data = await response.json();
 
-    if (!data.success) {
+    console.log("DATA RESERVASI:", data);
+
+    if (!data || !data.success) {
 
       result.innerHTML = `
       <div class="status-card pending">
-
-      <h3>Reservasi Tidak Ditemukan</h3>
-
-      <p>Pastikan nama pemohon benar.</p>
-
+        <h3>Reservasi Tidak Ditemukan</h3>
+        <p>Pastikan nama pemohon benar.</p>
       </div>
       `;
-
       return;
-
     }
 
-    // simpan data
     currentReservation = data;
 
     // ==========================
-    // STATUS MASIH PENDING
+    // STATUS CHECK AMAN
     // ==========================
 
-    if (
-      String(data.status).trim().toLowerCase() === "pending"
-    ) {
+    const status = String(data.status || "").toLowerCase();
+
+    if (status === "pending") {
 
       result.innerHTML = `
-
       <div class="status-card pending">
-
-      <h3>🟡 Permohonan Sedang Diproses</h3>
-
-      <p>
-
-      Dispatcher sedang menyiapkan
-      Driver dan Kendaraan.
-
-      </p>
-
+        <h3>🟡 Permohonan Sedang Diproses</h3>
+        <p>Dispatcher sedang menyiapkan Driver dan Kendaraan.</p>
       </div>
-
       `;
 
       return;
-
     }
 
     // ==========================
-    // AMBIL FOTO DRIVER
+    // FOTO DRIVER
     // ==========================
 
     let photoDriver =
@@ -248,119 +233,86 @@ async function cekReservasi() {
         "https://script.google.com/macros/s/AKfycbyxB_Bo2GNbb3EMc2JcPuUNmHHXMCSZndSjGDHiQFJ5R6GW49BxJsdjDCdcgtliZAE/exec?action=readBiodata"
       );
 
-      const biodata =
-        await biodataResponse.json();
+      const biodata = await biodataResponse.json();
 
-      const driver =
-        biodata.find(item =>
-          String(item.badge).trim() ===
-          String(data.badge).trim()
-        );
+      const driver = biodata.find(item =>
+        String(item.badge || "").trim() ===
+        String(data.badge || "").trim()
+      );
 
-      if(driver){
-
+      if (driver) {
         photoDriver = driver.photo || photoDriver;
 
-        // lengkapi data reservasi
-        currentReservation.photoDriver = driver.photo;
-        currentReservation.driverContact =
-          driver.contact || data.contact;
-
+        currentReservation.photoDriver = photoDriver;
+        currentReservation.driverContact = driver.contact || data.contact;
       }
 
-    } catch(err){
-
-      console.log(err);
-
+    } catch (err) {
+      console.log("Error biodata:", err);
     }
 
-    currentReservation.photoDriver = photoDriver;
-
     // ==========================
-    // TAMPILKAN RINGKASAN
+    // TAMPILKAN UI
     // ==========================
 
     result.innerHTML = `
 
 <div class="status-card open">
 
-<div style="text-align:center;">
+  <div style="text-align:center;">
 
-<img
-src="${photoDriver}"
-style="
-width:120px;
-height:160px;
-object-fit:cover;
-border-radius:8px;
-border:2px solid #ccc;
-margin-bottom:15px;
-">
+    <img
+      src="${photoDriver}"
+      style="
+        width:120px;
+        height:160px;
+        object-fit:cover;
+        border-radius:8px;
+        border:2px solid #ccc;
+        margin-bottom:15px;
+      ">
 
-<h3>
+    <h3>🟢 Driver & Kendaraan Sudah Disiapkan</h3>
 
-🟢 Driver & Kendaraan Sudah Disiapkan
+  </div>
 
-</h3>
+  <table style="width:100%;">
 
-</div>
+    <tr>
+      <td><b>Driver</b></td>
+      <td>${data.driver || "-"}</td>
+    </tr>
 
-<table style="width:100%;">
+    <tr>
+      <td><b>Fleet</b></td>
+      <td>${data.fleet || "-"}</td>
+    </tr>
 
-<tr>
+    <tr>
+      <td><b>Kendaraan</b></td>
+      <td>${data.vehicle || "-"}</td>
+    </tr>
 
-<td><b>Driver</b></td>
+    <tr>
+      <td><b>Dispatcher</b></td>
+      <td>${data.dispatcher || "-"}</td>
+    </tr>
 
-<td>${data.driver}</td>
-
-</tr>
-
-<tr>
-
-<td><b>Fleet</b></td>
-
-<td>${data.fleet}</td>
-
-</tr>
-
-<tr>
-
-<td><b>Kendaraan</b></td>
-
-<td>${data.vehicle}</td>
-
-</tr>
-
-<tr>
-
-<td><b>Dispatcher</b></td>
-
-<td>${data.dispatcher}</td>
-
-</tr>
-
-</table>
-
-<br>
-
-`;
-
-  } catch(err){
-
-    console.error(err);
-
-    result.innerHTML=`
-
-<div class="status-card pending">
-
-<h3>Terjadi Kesalahan</h3>
-
-<p>Gagal mengambil data reservasi.</p>
+  </table>
 
 </div>
 
 `;
 
+  } catch (err) {
+
+    console.error("ERROR CEK RESERVASI:", err);
+
+    result.innerHTML = `
+    <div class="status-card pending">
+      <h3>Terjadi Kesalahan</h3>
+      <p>Gagal mengambil data reservasi.</p>
+    </div>
+    `;
   }
-
 }

@@ -280,22 +280,27 @@ async function cekReservasi() {
 
     <tr>
       <td><b>Driver</b></td>
-      <td>${data.driver || "-"}</td>
+      <td>: ${data.driver || "-"}</td>
     </tr>
+      
+     <tr>
+      <td><b>Driver contact</b></td>
+      <td>: ${data.driverContact || "-"}</td>
+     </tr>
 
     <tr>
-      <td><b>Fleet</b></td>
-      <td>${data.fleet || "-"}</td>
+      <td><b>Fleet Code</b></td>
+      <td>: ${data.fleet || "-"}</td>
     </tr>
 
     <tr>
       <td><b>Kendaraan</b></td>
-      <td>${data.vehicle || "-"}</td>
+      <td>: ${data.vehicle || "-"}</td>
     </tr>
 
     <tr>
       <td><b>Dispatcher</b></td>
-      <td>${data.dispatcher || "-"}</td>
+      <td>: ${data.dispatcher || "-"}</td>
     </tr>
 
   </table>

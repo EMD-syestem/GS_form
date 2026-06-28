@@ -1,11 +1,5 @@
 window.addEventListener("load", () => {
 
-  if ("Notification" in window) {
-
-    Notification.requestPermission();
-
-  }
-
   setTimeout(() => {
 
     document
@@ -13,7 +7,7 @@ window.addEventListener("load", () => {
       .classList
       .add("splash-hide");
 
-  },3000);
+  }, 3000);
 
 });
 
@@ -135,8 +129,7 @@ document
 
 function toggleReservationSearch() {
 
-  const box =
-    document.getElementById("reservationSearchBox");
+  const box = document.getElementById("reservationSearchBox");
 
   if (
     box.style.display === "none" ||
@@ -149,67 +142,12 @@ function toggleReservationSearch() {
 
     box.style.display = "none";
 
-    document.getElementById(
-      "reservationResult"
-    ).style.display = "none";
-
-    if (autoCheck) {
-
-      clearInterval(autoCheck);
-
-      autoCheck = null;
-
-    }
-
-  }
-
-}
-// ======================
-// PLAY NOTIF
-// ======================
-
-function playNotification() {
-
-  const audio = document.getElementById("notifSound");
-
-  if (audio) {
-
-    audio.currentTime = 0;
-
-    audio.play().catch(() => {
-      console.log("Audio diblokir browser");
-    });
-
-  }
-
-  // Getar HP
-  if (navigator.vibrate) {
-    navigator.vibrate([300,150,300,150,500]);
-  }
-
-  // Notifikasi browser
-  if ("Notification" in window) {
-
-    if (Notification.permission === "granted") {
-
-      new Notification(
-        " Kendaraan Sudah Disiapkan", {
-          body: "Silakan buka aplikasi untuk melihat detail driver.",
-          icon: "https://i.postimg.cc/NMRDPgT5/GS-dispacer.jpg"
-        });
-
-    }
+    document.getElementById("reservationResult").style.display = "none";
 
   }
 
 }
 
-// ======================
-// STATUS TERAKHIR
-// ======================
-
-let lastStatus = "";
-let autoCheck = null;
 // menyimpan data reservasi yang sedang dibuka
 let currentReservation = null;
 
@@ -269,22 +207,6 @@ async function cekReservasi() {
     // ==========================
 
     const status = String(data.status || "").toLowerCase();
-    
-    // Jika status berubah dari Pending menjadi Open
-if (
-  lastStatus === "pending" &&
-  status === "open"
-) {
-
-  playNotification();
-
-  alert(
-    " Driver dan kendaraan sudah disiapkan."
-  );
-
-}
-
-lastStatus = status;
 
     if (status === "pending") {
 
@@ -360,14 +282,14 @@ lastStatus = status;
       <td><b>Driver</b></td>
       <td>: ${data.driver || "-"}</td>
     </tr>
-      
-     <tr>
-      <td><b>Driver contact</b></td>
-      <td>: ${data.driverContact || "-"}</td>
-     </tr>
+    
+    <tr>
+  <td><b>Driver Contact</b></td>
+  <td>: ${data.driverContact || "-"}</td>
+</tr>
 
     <tr>
-      <td><b>Fleet Code</b></td>
+      <td><b>Fleet</b></td>
       <td>: ${data.fleet || "-"}</td>
     </tr>
 
@@ -398,60 +320,4 @@ lastStatus = status;
     </div>
     `;
   }
-}
-
-async function cariReservasi() {
-
-  // aktifkan audio agar browser mengizinkan suara
-  const audio = document.getElementById("notifSound");
-
-  if (audio) {
-
-    try {
-
-      await audio.play();
-
-      audio.pause();
-
-      audio.currentTime = 0;
-
-    } catch(e){}
-
-  }
-
-  // cek pertama
-  await cekReservasi();
-
-  // mulai auto refresh
-  startAutoCheck();
-
-}
-
-// ======================
-// AUTO CHECK
-// ======================
-
-function startAutoCheck() {
-
-  if (autoCheck) {
-
-    clearInterval(autoCheck);
-
-  }
-
-  autoCheck = setInterval(() => {
-
-    const nama = document
-      .getElementById("searchReservation")
-      .value
-      .trim();
-
-    if (nama) {
-
-      cekReservasi();
-
-    }
-
-  },10000); // setiap 10 detik
-
 }

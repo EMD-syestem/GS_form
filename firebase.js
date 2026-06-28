@@ -6,7 +6,8 @@ import {
   onMessage
 } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-messaging.js";
 
-// Firebase Config
+// ================= FIREBASE CONFIG =================
+
 const firebaseConfig = {
 
   apiKey: "AIzaSyCZ8IjPWB6xfHbhwGeM53kmOn2H5-eGu98",
@@ -23,29 +24,76 @@ const firebaseConfig = {
 
 };
 
+// ================= INIT =================
+
 const app = initializeApp(firebaseConfig);
 
 const messaging = getMessaging(app);
 
-Notification.requestPermission().then(permission => {
+// ================= REGISTER SERVICE WORKER =================
 
-  if (permission === "granted") {
+if ("serviceWorker" in navigator) {
 
-    getToken(messaging, {
+  navigator.serviceWorker
+    .register("./firebase-messaging-sw.js")
 
-      vapidKey: "BLutwEx4IG0D5mbOOM4O05gbkfEf7s8cyiGDVwWkpP_5q5DYcShVoXUeY6y8uiU7qy_aRZ38dF5l_QWX6DivvvI"
+    .then(async (registration) => {
 
-    }).then((token) => {
+      console.log("Service Worker berhasil didaftarkan.");
 
-      console.log("FCM Token:", token);
+      const permission = await Notification.requestPermission();
+
+      if (permission !== "granted") {
+
+        alert("Izin notifikasi ditolak.");
+
+        return;
+
+      }
+
+      try {
+
+        const token = await getToken(messaging, {
+
+          vapidKey: "BLutwEx4IG0D5mbOOM4O05gbkfEf7s8cyiGDVwWkpP_5q5DYcShVoXUeY6y8uiU7qy_aRZ38dF5l_QWX6DivvvI",
+
+          serviceWorkerRegistration: registration
+
+        });
+
+        if (token) {
+
+          console.log("FCM Token:", token);
+
+          // Nanti token ini bisa dikirim ke Google Apps Script
+
+        } else {
+
+          console.log("Token tidak tersedia.");
+
+        }
+
+      } catch (err) {
+
+        console.error("Gagal mengambil token:", err);
+
+      }
+
+    })
+
+    .catch(err => {
+
+      console.error("Service Worker gagal:", err);
 
     });
 
-  }
+}
 
-});
+// ================= SAAT WEB SEDANG DIBUKA =================
 
 onMessage(messaging, (payload) => {
+
+  console.log(payload);
 
   alert(payload.notification.title);
 

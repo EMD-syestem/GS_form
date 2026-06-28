@@ -92,66 +92,53 @@ if (result.success) {
 
   // ================= SIMPAN TOKEN USER =================
 
-if (window.fcmToken) {
+  if (window.fcmToken) {
 
-  console.log("Nama Pemohon:", data.pemintaPekerjaan);
-  console.log("FCM Token:", window.fcmToken);
+    fetch(
+      "https://script.google.com/macros/s/AKfycbxgUVVUC6sQQ8sVFlEN41y7VuavXCDA0092z89mdbWs87C3bDqQ8pGkjwyo_EY3IjfsWQ/exec",
+      {
 
-  fetch(
-    "https://script.google.com/macros/s/AKfycbxgUVVUC6sQQ8sVFlEN41y7VuavXCDA0092z89mdbWs87C3bDqQ8pGkjwyo_EY3IjfsWQ/exec",
-    {
+        method: "POST",
 
-      method: "POST",
+        body: JSON.stringify({
 
-      body: JSON.stringify({
+          action: "saveToken",
 
-        action: "saveToken",
+          namaPemohon: data.pemintaPekerjaan,
 
-        namaPemohon: data.pemintaPekerjaan,
+          token: window.fcmToken
 
-        token: window.fcmToken
+        })
 
-      })
+      }
 
-    }
+    )
+    .then(res => res.json())
+    .then(res => console.log("Token berhasil disimpan", res))
+    .catch(err => console.error("Gagal simpan token:", err));
 
-  )
-  .then(res => res.json())
-  .then(res => {
-
-    console.log("Token berhasil disimpan", res);
-
-  })
-  .catch(err => {
-
-    console.error("Gagal simpan token:", err);
-
-  });
-
-} else {
-
-  console.warn("FCM Token tidak tersedia.");
-
-}
-
-document
-  .getElementById("successScreen")
-  .classList
-  .add("show");
-
-document
-  .getElementById("formPermohonan")
-  .reset();
-
-setTimeout(() => {
+  }
 
   document
     .getElementById("successScreen")
     .classList
-    .remove("show");
+    .add("show");
 
-}, 7000);
-  
+  document
+    .getElementById("formPermohonan")
+    .reset();
+
+  setTimeout(() => {
+
+    document
+      .getElementById("successScreen")
+      .classList
+      .remove("show");
+
+  }, 7000);
+
+}
+      
     } catch (error) {
 
       alert("Gagal mengirim data");

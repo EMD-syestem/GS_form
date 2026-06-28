@@ -78,24 +78,38 @@ document
 
     try {
 
-      const response = await fetch(
-  "https://script.google.com/macros/s/AKfycbydPtZcNnigNpZIBbJE26-yDpTivOVcbgwFLym-gWqC5zUzMKooVGEVqISgC-eURcIBNg/exec",
-  {
-    method: "POST",
-    body: JSON.stringify(data)
+      const jumlah = parseInt(
+  document.getElementById("jumlahkendaraan").value
+) || 1;
+
+let semuaBerhasil = true;
+
+for (let i = 0; i < jumlah; i++) {
+
+  const response = await fetch(
+    "https://script.google.com/macros/s/AKfycbwNb9HlH8Xa5chSINIUb7Ti1OjA_4PoAqJ5p3u6qbTbbe-w39JIlPgK-J6QnRreFvUwdA/exec",
+    {
+      method: "POST",
+      body: JSON.stringify(data)
+    }
+  );
+
+  const result = await response.json();
+
+  if (!result.success) {
+    semuaBerhasil = false;
+    break;
   }
-);
 
-const result = await response.json();
+}
 
-if (result.success) {
-
+if (semuaBerhasil) {
   // ================= SIMPAN TOKEN USER =================
 
   if (window.fcmToken) {
 
     fetch(
-      "https://script.google.com/macros/s/AKfycbydPtZcNnigNpZIBbJE26-yDpTivOVcbgwFLym-gWqC5zUzMKooVGEVqISgC-eURcIBNg/exec",
+      "https://script.google.com/macros/s/AKfycbwNb9HlH8Xa5chSINIUb7Ti1OjA_4PoAqJ5p3u6qbTbbe-w39JIlPgK-J6QnRreFvUwdA/exec",
       {
 
         method: "POST",
@@ -210,13 +224,16 @@ async function cekReservasi() {
     // ==========================
 
     const response = await fetch(
-      "https://script.google.com/macros/s/AKfycbydPtZcNnigNpZIBbJE26-yDpTivOVcbgwFLym-gWqC5zUzMKooVGEVqISgC-eURcIBNg/exec?action=search&nama=" +
+      "https://script.google.com/macros/s/AKfycbwNb9HlH8Xa5chSINIUb7Ti1OjA_4PoAqJ5p3u6qbTbbe-w39JIlPgK-J6QnRreFvUwdA/exec?action=search&nama=" +
       encodeURIComponent(nama)
     );
 
     const data = await response.json();
 
     console.log("DATA RESERVASI:", data);
+    
+    console.log(data);
+console.log(data.reservations);
 
     if (!data || !data.success) {
 
@@ -229,13 +246,15 @@ async function cekReservasi() {
       return;
     }
 
-    currentReservation = data;
+   currentReservation = data.reservations;
 
     // ==========================
     // STATUS CHECK AMAN
     // ==========================
 
-    const status = String(data.status || "").toLowerCase();
+  const status = String(
+  data.reservations[0].status || ""
+).toLowerCase();
 
     if (status === "pending") {
 
@@ -253,38 +272,52 @@ async function cekReservasi() {
     // FOTO DRIVER
     // ==========================
 
-    let photoDriver =
-      "https://i.postimg.cc/NMRDPgT5/GS-dispacer.jpg";
+   // ==========================
+// FOTO DRIVER
+// ==========================
 
-    try {
+const defaultPhoto =
+  "https://i.postimg.cc/NMRDPgT5/GS-dispacer.jpg";
 
-      const biodataResponse = await fetch(
-        "https://script.google.com/macros/s/AKfycbyxB_Bo2GNbb3EMc2JcPuUNmHHXMCSZndSjGDHiQFJ5R6GW49BxJsdjDCdcgtliZAE/exec?action=readBiodata"
-      );
+let biodata = [];
 
-      const biodata = await biodataResponse.json();
+try {
 
-      const driver = biodata.find(item =>
-        String(item.badge || "").trim() ===
-        String(data.badge || "").trim()
-      );
+  const biodataResponse = await fetch(
+    "https://script.google.com/macros/s/AKfycbyxB_Bo2GNbb3EMc2JcPuUNmHHXMCSZndSjGDHiQFJ5R6GW49BxJsdjDCdcgtliZAE/exec?action=readBiodata"
+  );
 
-      if (driver) {
-        photoDriver = driver.photo || photoDriver;
+  biodata = await biodataResponse.json();
 
-        currentReservation.photoDriver = photoDriver;
-        currentReservation.driverContact = driver.contact || data.contact;
-      }
+} catch (err) {
 
-    } catch (err) {
-      console.log("Error biodata:", err);
-    }
+  console.log("Error biodata:", err);
 
-    // ==========================
-    // TAMPILKAN UI
-    // ==========================
+}
 
-    result.innerHTML = `
+// ==========================
+// TAMPILKAN UI
+// ==========================
+
+let html = "";
+
+for (const item of data.reservations) {
+
+  // Cari driver berdasarkan badge
+  const driver = biodata.find(d =>
+    String(d.badge || "").trim() ===
+    String(item.badge || "").trim()
+  );
+
+  // Foto driver
+  const photoDriver =
+    driver?.photo || defaultPhoto;
+
+  // Nomor driver
+  const driverContact =
+    driver?.contact || item.driverContact;
+
+  html += `
 
 <div class="status-card open">
 
@@ -309,37 +342,37 @@ async function cekReservasi() {
 
     <tr>
       <td><b>Driver</b></td>
-      <td>: ${data.driver || "-"}</td>
+      <td>: ${item.driver || "-"}</td>
     </tr>
-    
+
     <tr>
-  <td><b>Driver Contact</b></td>
-  <td>:
-    ${
-      data.driverContact
-        ? `<a href="https://wa.me/${data.driverContact.replace(/^0/, "62").replace(/\D/g, "")}"
-             target="_blank"
-             style="color:#25D366;font-weight:bold;text-decoration:none;">
-             ${data.driverContact}
-           </a>`
-        : "-"
-    }
-  </td>
-</tr>
+      <td><b>Driver Contact</b></td>
+      <td>:
+        ${
+          driverContact
+            ? `<a href="https://wa.me/${driverContact.replace(/^0/, "62").replace(/\D/g, "")}?text=${encodeURIComponent(`Halo Mas ${item.driver}, saya diarahkan oleh dispatcher kepada Mas terkait reservasi kendaraan.`)}"
+                 target="_blank"
+                 style="color:#25D366;font-weight:bold;text-decoration:none;">
+                 ${driverContact}
+               </a>`
+            : "-"
+        }
+      </td>
+    </tr>
 
     <tr>
       <td><b>Fleet</b></td>
-      <td>: ${data.fleet || "-"}</td>
+      <td>: ${item.fleet || "-"}</td>
     </tr>
 
     <tr>
       <td><b>Kendaraan</b></td>
-      <td>: ${data.vehicle || "-"}</td>
+      <td>: ${item.vehicle || "-"}</td>
     </tr>
 
     <tr>
       <td><b>Dispatcher</b></td>
-      <td>: ${data.dispatcher || "-"}</td>
+      <td>: ${item.dispatcher || "-"}</td>
     </tr>
 
   </table>
@@ -348,6 +381,9 @@ async function cekReservasi() {
 
 `;
 
+}
+
+result.innerHTML = html;
   } catch (err) {
 
     console.error("ERROR CEK RESERVASI:", err);

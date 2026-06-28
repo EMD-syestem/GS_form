@@ -30,6 +30,9 @@ const app = initializeApp(firebaseConfig);
 
 const messaging = getMessaging(app);
 
+// Supaya bisa dipakai dari script.js
+window.fcmToken = null;
+
 // ================= REGISTER SERVICE WORKER =================
 
 if ("serviceWorker" in navigator) {
@@ -65,7 +68,8 @@ if ("serviceWorker" in navigator) {
 
           console.log("FCM Token:", token);
 
-          // Nanti token ini bisa dikirim ke Google Apps Script
+          // Simpan token agar bisa dipakai oleh script.js
+          window.fcmToken = token;
 
         } else {
 
@@ -93,7 +97,7 @@ if ("serviceWorker" in navigator) {
 
 onMessage(messaging, (payload) => {
 
-  console.log(payload);
+  console.log("Notifikasi diterima:", payload);
 
   alert(payload.notification.title);
 

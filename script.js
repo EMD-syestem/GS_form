@@ -79,7 +79,7 @@ document
     try {
 
       const response = await fetch(
-  "https://script.google.com/macros/s/AKfycbyu4xLujZ6t9CcchB1d3632DmPoxpjS1jmeLQeBdd_4f9gLcLU2Z2XJx0CRoUEb5o1fHQ/exec",
+  "https://script.google.com/macros/s/AKfycbz-3GxLLrbnZ1Yma6DNn1hRqL5NuPt0JKjESy_RrFrUs8yigxML6ar3oI6ZTCImgbKx2A/exec",
   {
     method: "POST",
     body: JSON.stringify(data)
@@ -95,7 +95,7 @@ if (result.success) {
   if (window.fcmToken) {
 
     fetch(
-      "https://script.google.com/macros/s/AKfycbyu4xLujZ6t9CcchB1d3632DmPoxpjS1jmeLQeBdd_4f9gLcLU2Z2XJx0CRoUEb5o1fHQ/exec",
+      "https://script.google.com/macros/s/AKfycbz-3GxLLrbnZ1Yma6DNn1hRqL5NuPt0JKjESy_RrFrUs8yigxML6ar3oI6ZTCImgbKx2A/exec",
       {
 
         method: "POST",
@@ -210,7 +210,7 @@ async function cekReservasi() {
     // ==========================
 
     const response = await fetch(
-      "https://script.google.com/macros/s/AKfycbyu4xLujZ6t9CcchB1d3632DmPoxpjS1jmeLQeBdd_4f9gLcLU2Z2XJx0CRoUEb5o1fHQ/exec?action=search&nama=" +
+      "https://script.google.com/macros/s/AKfycbz-3GxLLrbnZ1Yma6DNn1hRqL5NuPt0JKjESy_RrFrUs8yigxML6ar3oI6ZTCImgbKx2A/exec?action=search&nama=" +
       encodeURIComponent(nama)
     );
 

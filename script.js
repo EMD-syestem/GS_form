@@ -314,7 +314,17 @@ async function cekReservasi() {
     
     <tr>
   <td><b>Driver Contact</b></td>
-  <td>: ${data.driverContact || "-"}</td>
+  <td>:
+    ${
+      data.driverContact
+        ? `<a href="https://wa.me/${data.driverContact.replace(/^0/, "62").replace(/\D/g, "")}"
+             target="_blank"
+             style="color:#25D366;font-weight:bold;text-decoration:none;">
+             ${data.driverContact}
+           </a>`
+        : "-"
+    }
+  </td>
 </tr>
 
     <tr>

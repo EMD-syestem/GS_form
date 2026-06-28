@@ -79,37 +79,66 @@ document
     try {
 
       const response = await fetch(
-        "https://script.google.com/macros/s/AKfycbzVfz2--NNW5j4DerQtkhrX3zarQkUoHyPnyqYZUJIQ3ALVEXWNY2gBG6XtOnQfrrbx/exec",
-        {
-          method: "POST",
-          body: JSON.stringify(data)
-        }
-      );
+  "https://script.google.com/macros/s/AKfycbzVfz2--NNW5j4DerQtkhrX3zarQkUoHyPnyqYZUJIQ3ALVEXWNY2gBG6XtOnQfrrbx/exec",
+  {
+    method: "POST",
+    body: JSON.stringify(data)
+  }
+);
 
-      const result = await response.json();
+const result = await response.json();
 
-      if (result.success) {
+if (result.success) {
 
-        document
-          .getElementById("successScreen")
-          .classList
-          .add("show");
+  // ================= SIMPAN TOKEN USER =================
 
-        document
-          .getElementById("formPermohonan")
-          .reset();
+  if (window.fcmToken) {
 
-        setTimeout(() => {
+    fetch(
+      "https://script.google.com/macros/s/AKfycbxvBAB9-dFkqElKnNkXemvE9Ez_hPgDPgcrRcZM8PwpOMaruK-ol6mx01e2koAzNt_tfA/exec",
+      {
 
-          document
-            .getElementById("successScreen")
-            .classList
-            .remove("show");
+        method: "POST",
 
-        }, 7000);
+        body: JSON.stringify({
+
+          action: "saveToken",
+
+          namaPemohon: data.pemintaPekerjaan,
+
+          token: window.fcmToken
+
+        })
 
       }
 
+    )
+    .then(res => res.json())
+    .then(res => console.log("Token berhasil disimpan", res))
+    .catch(err => console.error("Gagal simpan token:", err));
+
+  }
+
+  document
+    .getElementById("successScreen")
+    .classList
+    .add("show");
+
+  document
+    .getElementById("formPermohonan")
+    .reset();
+
+  setTimeout(() => {
+
+    document
+      .getElementById("successScreen")
+      .classList
+      .remove("show");
+
+  }, 7000);
+
+}
+      
     } catch (error) {
 
       alert("Gagal mengirim data");

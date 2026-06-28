@@ -79,7 +79,7 @@ document
     try {
 
       const response = await fetch(
-  "https://script.google.com/macros/s/AKfycbzVfz2--NNW5j4DerQtkhrX3zarQkUoHyPnyqYZUJIQ3ALVEXWNY2gBG6XtOnQfrrbx/exec",
+  "https://script.google.com/macros/s/AKfycbxvBAB9-dFkqElKnNkXemvE9Ez_hPgDPgcrRcZM8PwpOMaruK-ol6mx01e2koAzNt_tfA/exec",
   {
     method: "POST",
     body: JSON.stringify(data)
@@ -210,7 +210,7 @@ async function cekReservasi() {
     // ==========================
 
     const response = await fetch(
-      "https://script.google.com/macros/s/AKfycbzVfz2--NNW5j4DerQtkhrX3zarQkUoHyPnyqYZUJIQ3ALVEXWNY2gBG6XtOnQfrrbx/exec?action=search&nama=" +
+      "https://script.google.com/macros/s/AKfycbxvBAB9-dFkqElKnNkXemvE9Ez_hPgDPgcrRcZM8PwpOMaruK-ol6mx01e2koAzNt_tfA/exec?action=search&nama=" +
       encodeURIComponent(nama)
     );
 

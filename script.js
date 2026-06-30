@@ -91,10 +91,13 @@ if (SpeechRecognition) {
 
   recognition.onend = () => {
 
-    // Aktif lagi otomatis
-    recognition.start();
+    setTimeout(() => {
 
-  };
+        recognition.start();
+
+    }, 3000);
+
+};
 
 }
 

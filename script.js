@@ -95,7 +95,7 @@ if (SpeechRecognition) {
 
         recognition.start();
 
-    }, 3000);
+    }, 10000);
 
 };
 

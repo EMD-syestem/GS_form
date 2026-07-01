@@ -151,44 +151,58 @@
   <button
     type="button"
     class="btn-check"
-    onclick="toggleReservationSearch()">
+    onclick="openReservationModal()">
 
     Cek Status
 
   </button>
 
-</div>
+       </div>
 
-<!-- Panel Pencarian -->
-<div id="reservationSearchBox">
-
-  <div class="form-group">
-
-    <label>Nama Pemohon</label>
-
-    <input
-      id="searchReservation"
-      placeholder="Masukan nama dan No handphone">
-
-  </div>
-
-  <button
-    type="button"
-    class="btn-search"
-    onclick="cekReservasi()">
-
-    Cari Reservasi
-
-  </button>
-
-  <div id="reservationResult"></div>
-
-</div>
       </form>
 
     </div>
 
   </div>
+
+   <div id="reservationModal" class="reservation-modal">
+
+    <div class="reservation-modal-content">
+
+        <div class="reservation-modal-header">
+
+            <h2>Status Reservasi</h2>
+
+            <span class="reservation-close"
+                  onclick="closeReservationModal()">
+                &times;
+            </span>
+
+        </div>
+
+        <div class="form-group">
+
+            <label>Nama Pemohon</label>
+
+            <input
+                id="searchReservation"
+                placeholder="Masukkan nama dan No. Handphone">
+
+        </div>
+
+        <button
+            class="btn-search"
+            onclick="cekReservasi()">
+
+            Cari Reservasi
+
+        </button>
+
+        <div id="reservationResult"></div>
+
+    </div>
+
+</div>
   
   <!-- SUCCESS SCREEN -->
 

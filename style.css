@@ -537,392 +537,472 @@ textarea:focus {
 
 }
 
-/* Kotak Status */
+/* =====================================================
+   MODAL STATUS RESERVASI
+===================================================== */
+
+.reservation-modal{
+
+    display:none;
+
+    position:fixed;
+
+    inset:0;
+
+    z-index:99999;
+
+    background:rgba(0,0,0,.45);
+
+    backdrop-filter:blur(6px);
+
+    animation:fadeIn .25s;
+}
+
+.reservation-modal-content{
+
+    width:min(760px,95%);
+
+    max-height:90vh;
+
+    overflow:auto;
+
+    margin:35px auto;
+
+    border-radius:22px;
+
+    background:#ffffff;
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.25);
+
+    animation:slideUp .35s ease;
+}
+
+/* =====================================================
+   HEADER
+===================================================== */
+
+.reservation-modal-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:18px 25px;
+
+    color:#fff;
+
+    background:
+        linear-gradient(
+            135deg,
+            #1b5e20,
+            #43a047
+        );
+}
+
+.reservation-modal-header h2{
+
+    font-size:24px;
+
+    font-weight:700;
+
+    letter-spacing:.5px;
+}
+
+.reservation-close{
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:50%;
+
+    display:flex;
+
+    justify-content:center;
+
+    align-items:center;
+
+    font-size:30px;
+
+    cursor:pointer;
+
+    transition:.25s;
+}
+
+.reservation-close:hover{
+
+    background:rgba(255,255,255,.15);
+
+    transform:rotate(90deg);
+}
+
+/* =====================================================
+   BODY
+===================================================== */
+
+#reservationResult{
+
+    padding:25px;
+
+    background:#f5f8fb;
+}
+
+/* =====================================================
+   CARD
+===================================================== */
 
 .status-card{
 
-  background:white;
+    background:#fff;
 
-  border-radius:15px;
+    border-radius:18px;
 
-  padding:18px;
+    padding:22px;
 
-  border-left:6px solid #2e7d32;
+    margin-bottom:20px;
 
-  box-shadow:
-      0 8px 20px rgba(0,0,0,.08);
+    box-shadow:
 
+        0 12px 35px rgba(0,0,0,.08);
+
+    border-top:6px solid #2e7d32;
+
+    transition:.25s;
 }
+
+.status-card:hover{
+
+    transform:translateY(-3px);
+
+    box-shadow:
+
+        0 20px 45px rgba(0,0,0,.12);
+}
+
+/* =====================================================
+   STATUS
+===================================================== */
 
 .status-card.pending{
 
-  border-left-color:#f9a825;
+    border-top-color:#f9a825;
 
 }
 
 .status-card.open{
 
-  border-left-color:#2e7d32;
+    border-top-color:#2e7d32;
 
+}
+
+.status-card.rejected{
+
+    border-top-color:#e53935;
+
+    background:#fff7f7;
 }
 
 .status-card h3{
 
-  margin-bottom:15px;
+    font-size:22px;
 
-  color:#2d4d2b;
+    margin-bottom:18px;
 
+    color:#2d4d2b;
 }
+
+.status-card.rejected h3{
+
+    color:#d32f2f;
+}
+
+/* =====================================================
+   FOTO DRIVER
+===================================================== */
+
+.status-card img{
+
+    width:140px;
+
+    height:180px;
+
+    object-fit:cover;
+
+    border-radius:15px;
+
+    border:4px solid #fff;
+
+    box-shadow:
+
+        0 12px 30px rgba(0,0,0,.18);
+
+    margin-bottom:18px;
+}
+
+/* =====================================================
+   TABLE
+===================================================== */
 
 .status-card table{
 
-  width:100%;
+    width:100%;
 
-  border-collapse:collapse;
+    border-collapse:collapse;
 
+    margin-top:10px;
 }
 
 .status-card td{
 
-  padding:8px 0;
+    padding:12px 10px;
 
-  border-bottom:1px solid #ececec;
+    border-bottom:1px solid #ececec;
 
+    vertical-align:top;
 }
 
 .status-card td:first-child{
 
-  font-weight:600;
+    width:170px;
 
-  width:150px;
+    font-weight:700;
 
+    color:#2d4d2b;
 }
+
+/* =====================================================
+   WA LINK
+===================================================== */
+
+.status-card a{
+
+    color:#1fa855;
+
+    font-weight:700;
+
+    text-decoration:none;
+
+    transition:.2s;
+}
+
+.status-card a:hover{
+
+    color:#0b7d3b;
+
+    text-decoration:underline;
+}
+
+/* =====================================================
+   BUTTON SEARCH
+===================================================== */
 
 .btn-search{
 
-  margin-top:10px;
-
-}
-
-/* Mobile */
-
-@media(max-width:600px){
-
-  .button-row{
-
-    flex-direction:column;
-
-  }
-
-}
-
-/* ================= MODERN CARD ================= */
-
-.card{
-
-    overflow:hidden;
-
-    position:relative;
-
-    border-radius:28px;
-
-    background:rgba(255,255,255,.95);
-
-    box-shadow:
-        0 20px 45px rgba(0,0,0,.08);
-
-}
-
-.card::before{
-
-    content:"";
-
-    position:absolute;
-
-    left:0;
-    top:0;
-
     width:100%;
-    height:7px;
 
-    background:linear-gradient(
-        90deg,
-        #1b5e20,
-        #43a047,
-        #81c784
-    );
+    margin-top:15px;
 
-}
+    padding:14px;
 
-body{
+    border:none;
+
+    border-radius:12px;
+
+    font-size:17px;
+
+    font-weight:700;
+
+    color:#fff;
+
+    cursor:pointer;
 
     background:
-        radial-gradient(circle at top,#f4fff4,#eef5ee 45%,#e7efe7);
 
+        linear-gradient(
+            135deg,
+            #2e7d32,
+            #43a047
+        );
+
+    transition:.25s;
 }
 
-.header-icon{
+.btn-search:hover{
 
-    width:110px;
-    height:110px;
-
-    border:5px solid white;
+    transform:translateY(-2px);
 
     box-shadow:
-        0 20px 35px rgba(0,0,0,.15);
 
-    transition:.4s;
-
+        0 12px 25px rgba(46,125,50,.35);
 }
 
-.header-icon:hover{
+/* =====================================================
+   INPUT
+===================================================== */
 
-    transform:scale(1.05);
+#searchReservation{
 
+    width:100%;
+
+    padding:14px;
+
+    border-radius:12px;
+
+    border:2px solid #dfe5ea;
+
+    font-size:16px;
+
+    transition:.25s;
 }
 
-h2{
+#searchReservation:focus{
 
-    margin-top:5px;
+    outline:none;
 
-    margin-bottom:8px;
-
-    font-size:28px;
-
-}
-
-.subtitle{
-
-    text-align:center;
-
-    color:#6d6d6d;
-
-    margin-bottom:30px;
-
-    line-height:1.5;
-
-}
-
-input,
-textarea{
-
-    background:#fafafa;
-
-    border:2px solid #e7ece8;
-
-}
-
-input:hover,
-textarea:hover{
-
-    border-color:#9ccc65;
-
-}
-
-input:focus,
-textarea:focus{
-
-    background:white;
-
-}
-
-button{
-
-    border-radius:16px;
-
-    letter-spacing:.3px;
-
-    transition:.35s;
-
-}
-
-button:hover{
-
-    transform:translateY(-3px);
-
-}
-
-button:active{
-
-    transform:scale(.97);
-
-}
-
-.status-card{
-
-    margin-bottom:20px;
-
-    border-radius:22px;
-
-    padding:20px;
-
-    overflow:hidden;
+    border-color:#2e7d32;
 
     box-shadow:
-        0 15px 35px rgba(0,0,0,.08);
+
+        0 0 0 4px rgba(46,125,50,.15);
+}
+
+/* =====================================================
+   SCROLLBAR
+===================================================== */
+
+.reservation-modal-content::-webkit-scrollbar{
+
+    width:8px;
+}
+
+.reservation-modal-content::-webkit-scrollbar-thumb{
+
+    background:#43a047;
+
+    border-radius:20px;
+}
+
+/* =====================================================
+   ANIMATION
+===================================================== */
+
+@keyframes fadeIn{
+
+from{
+
+    opacity:0;
+
+}
+
+to{
+
+    opacity:1;
+
+}
+
+}
+
+@keyframes slideUp{
+
+from{
+
+    transform:translateY(40px) scale(.97);
+
+    opacity:0;
+
+}
+
+to{
+
+    transform:translateY(0) scale(1);
+
+    opacity:1;
+
+}
+
+}
+
+/* =====================================================
+   MOBILE
+===================================================== */
+
+@media(max-width:768px){
+
+.reservation-modal-content{
+
+    width:96%;
+
+    margin:12px auto;
+
+    max-height:96vh;
+
+    border-radius:18px;
 
 }
 
 .status-card img{
 
-    width:130px;
+    width:120px;
 
-    height:170px;
-
-    border-radius:14px;
-
-    object-fit:cover;
-
-    border:4px solid white;
-
-    box-shadow:
-        0 12px 25px rgba(0,0,0,.15);
-
-}
-
-.status-card table{
-
-    margin-top:15px;
-
-}
-
-.status-card td{
-
-    padding:12px 0;
+    height:160px;
 
 }
 
 .status-card td:first-child{
 
-    color:#2f2f2f;
-
-    width:140px;
+    width:120px;
 
 }
 
-.status-card a{
+.status-card h3{
 
-    color:#00a651;
-
-    font-weight:bold;
-
-    text-decoration:none;
+    font-size:19px;
 
 }
 
-.status-card a:hover{
+}
 
-    text-decoration:underline;
+.reservation-modal-header h2{
+
+    color:#ffffff !important;
+
+    margin:0;
+
+    font-size:24px;
+
+    font-weight:700;
+
+    letter-spacing:.5px;
 
 }
 
-.status-card{
+.reservation-close{
 
-    animation:cardShow .45s ease;
+    color:#ffffff;
 
+    width:42px;
+    height:42px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    font-size:32px;
+
+    cursor:pointer;
+
+    transition:.3s;
 }
 
-@keyframes cardShow{
+.reservation-close:hover{
 
-    from{
+    background:rgba(255,255,255,.2);
 
-        opacity:0;
-
-        transform:translateY(25px);
-
-    }
-
-    to{
-
-        opacity:1;
-
-        transform:translateY(0);
-
-    }
-
-}
-
-@media(max-width:600px){
-
-    body{
-
-        padding:10px;
-
-    }
-
-    .card{
-
-        padding:18px;
-
-        border-radius:24px;
-
-    }
-
-    h2{
-
-        font-size:22px;
-
-    }
-
-    .subtitle{
-
-        font-size:14px;
-
-    }
-
-    .header-icon{
-
-        width:90px;
-
-        height:90px;
-
-    }
-
-    input,
-    textarea{
-
-        padding:15px;
-
-        font-size:16px;
-
-    }
-
-    .status-card{
-
-        padding:18px;
-
-        border-radius:18px;
-
-    }
-
-    .status-card img{
-
-        width:110px;
-
-        height:150px;
-
-    }
-
-    .status-card td{
-
-        display:block;
-
-        width:100%;
-
-        padding:4px 0;
-
-        border:none;
-
-    }
-
-    .status-card td:first-child{
-
-        font-size:13px;
-
-        color:#666;
-
-        margin-top:8px;
-
-    }
+    transform:rotate(90deg);
 
 }

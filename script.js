@@ -30,6 +30,27 @@ document
 
     submitBtn.disabled = true;
     submitBtn.textContent = "Mengirim Permohonan...";
+  
+   const pemohon = document
+  .getElementById("pemohon")
+  .value
+  .trim();
+
+// Cari nomor HP Indonesia
+const nomorHP = pemohon.match(/(?:\+62|62|0)8\d[\d\s-]{7,}/);
+
+if (!nomorHP) {
+
+  alert("Silakan isi nama anda beserta nomor handphone.\n\nContoh:\nBudi 0852 1234 4321");
+
+  submitBtn.disabled = false;
+  submitBtn.textContent = "Kirim Permohonan";
+  isSubmitting = false;
+
+  document.getElementById("pemohon").focus();
+
+  return;
+}
 
     const data = {
 
@@ -170,6 +191,18 @@ if (semuaBerhasil) {
 
   });
 
+function openReservationModal(){
+
+    document.getElementById("reservationModal").style.display="block";
+
+}
+
+function closeReservationModal(){
+
+    document.getElementById("reservationModal").style.display="none";
+
+}
+
 function toggleReservationSearch() {
 
   const box = document.getElementById("reservationSearchBox");
@@ -211,11 +244,16 @@ async function cekReservasi() {
     return;
   }
 
-  const result =
-    document.getElementById("reservationResult");
+  openReservationModal();
 
-  result.style.display = "block";
-  result.innerHTML = "<p>Memeriksa reservasi...</p>";
+const result =
+document.getElementById("reservationResult");
+
+result.innerHTML = `
+<div style="text-align:center;padding:40px;">
+    <h3> Memeriksa Data Reservasi...</h3>
+</div>
+`;
 
   try {
 
@@ -252,26 +290,48 @@ console.log(data.reservations);
     // STATUS CHECK AMAN
     // ==========================
 
-  const status = String(
+ const status = String(
   data.reservations[0].status || ""
-).toLowerCase();
+).trim().toLowerCase();
 
-    if (status === "pending") {
+// ==========================
+// STATUS PENDING
+// ==========================
 
-      result.innerHTML = `
-      <div class="status-card pending">
-        <h3>🟡 Permohonan Sedang Diproses</h3>
-        <p>Dispatcher sedang menyiapkan Driver dan Kendaraan.</p>
-      </div>
-      `;
+if (status === "pending") {
 
-      return;
-    }
+  result.innerHTML = `
+  <div class="status-card pending">
+    <h3>🟡 Permohonan Sedang Diproses</h3>
+    <p>Dispatcher sedang menyiapkan Driver dan Kendaraan.
+    Terimakasih sudah aktif mengecek reservasi anda</p>
+  </div>
+  `;
 
-    // ==========================
-    // FOTO DRIVER
-    // ==========================
+  return;
+}
 
+// ==========================
+// STATUS FULL JOB
+// ==========================
+
+if (
+  status === "kendaraan full job" ||
+  status === "kendaraan full job"
+) {
+
+  result.innerHTML = `
+  <div class="status-card rejected">
+    <h3>🔴 Permohonan Ditolak</h3>
+    <p>
+      Mohon maaf, seluruh kendaraan kami saat ini sedang digunakan
+      (<b>kendaraan full job</b>), sehingga permohonan reservasi anda tidak dapat diproses.
+    </p>
+  </div>
+  `;
+
+  return;
+}
    // ==========================
 // FOTO DRIVER
 // ==========================

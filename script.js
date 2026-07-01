@@ -350,7 +350,7 @@ for (const item of data.reservations) {
       <td>:
         ${
           driverContact
-            ? `<a href="https://wa.me/${driverContact.replace(/^0/, "62").replace(/\D/g, "")}?text=${encodeURIComponent(`Halo Mas ${item.driver}, saya diarahkan oleh dispatcher kepada Mas terkait reservasi kendaraan.`)}"
+            ? `<a href="https://wa.me/${driverContact.replace(/^0/, "62").replace(/\D/g, "")}?text=${encodeURIComponent(`Halo Mas ${item.driver}, saya diarahkan oleh dispatcher kepada Mas ${item.driver} terkait reservasi kendaraan.`)}"
                  target="_blank"
                  style="color:#25D366;font-weight:bold;text-decoration:none;">
                  ${driverContact}

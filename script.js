@@ -233,27 +233,45 @@ let currentReservation = null;
 
 async function cekReservasi() {
 
-  const nama =
-    document
-      .getElementById("searchReservation")
-      .value
-      .trim();
+  const pemohon = document
+    .getElementById("searchReservation")
+    .value
+    .trim();
 
-  if (!nama) {
-    alert("Masukkan nama pemohon.");
+  // Wajib diisi
+  if (!pemohon) {
+
+    alert(
+      "Silakan isi nama beserta nomor handphone.\n\nContoh:\nBudi 0852 1234 4321"
+    );
+
+    document.getElementById("searchReservation").focus();
+    return;
+  }
+
+  // Cari nomor HP Indonesia
+  const nomorHP = pemohon.match(/(?:\+62|62|0)8\d[\d\s-]{7,}/);
+
+  if (!nomorHP) {
+
+    alert(
+      "Silakan isi nama beserta nomor handphone yang didaftarkan di form.\n\nContoh:\nBudi 0852 1234 4321"
+    );
+
+    document.getElementById("searchReservation").focus();
     return;
   }
 
   openReservationModal();
 
-const result =
-document.getElementById("reservationResult");
+  const result =
+    document.getElementById("reservationResult");
 
-result.innerHTML = `
-<div style="text-align:center;padding:40px;">
-    <h3> Memeriksa Data Reservasi...</h3>
-</div>
-`;
+  result.innerHTML = `
+  <div style="text-align:center;padding:40px;">
+      <h3>Memeriksa Data Reservasi...</h3>
+  </div>
+  `;
 
   try {
 
@@ -263,9 +281,10 @@ result.innerHTML = `
 
     const response = await fetch(
       "https://script.google.com/macros/s/AKfycbwNb9HlH8Xa5chSINIUb7Ti1OjA_4PoAqJ5p3u6qbTbbe-w39JIlPgK-J6QnRreFvUwdA/exec?action=search&nama=" +
-      encodeURIComponent(nama)
+      encodeURIComponent(pemohon)
     );
 
+  
     const data = await response.json();
 
     console.log("DATA RESERVASI:", data);

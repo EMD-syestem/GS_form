@@ -402,62 +402,58 @@ for (const item of data.reservations) {
 
   <div style="text-align:center;">
 
-    <img
-      src="${photoDriver}"
-      style="
-        width:120px;
-        height:160px;
-        object-fit:cover;
-        border-radius:8px;
-        border:2px solid #ccc;
-        margin-bottom:15px;
-      ">
+   <img
+src="${photoDriver}"
+class="driver-photo">
 
     <h3>🟢 Driver & Kendaraan Sudah Disiapkan</h3>
 
   </div>
 
-  <table style="width:100%;">
+ <div class="driver-info">
 
-    <tr>
-      <td><b>Driver</b></td>
-      <td>: ${item.driver || "-"}</td>
-    </tr>
+    <div class="info-row">
+        <span class="label">Driver</span>
+        <span class="value">${item.driver || "-"}</span>
+    </div>
 
-    <tr>
-      <td><b>Driver Contact</b></td>
-      <td>:
+    <div class="info-row">
+        <span class="label">Driver Contact</span>
+
+        <span class="value">
+
         ${
-          driverContact
-            ? `<a href="https://wa.me/${driverContact.replace(/^0/, "62").replace(/\D/g, "")}?text=${encodeURIComponent(`Halo Mas ${item.driver}, saya diarahkan oleh dispatcher kepada Mas ${item.driver} terkait reservasi kendaraan.`)}"
-                 target="_blank"
-                 style="color:#25D366;font-weight:bold;text-decoration:none;">
-                 ${driverContact}
-               </a>`
-            : "-"
+        driverContact
+        ? `
+        <a href="https://wa.me/${driverContact.replace(/^0/,"62").replace(/\D/g,"")}?text=${encodeURIComponent(`Halo Mas ${item.driver}, saya diarahkan oleh dispatcher terkait reservasi kendaraan.`)}">
+
+        ${driverContact}
+
+        </a>
+        `
+        : "-"
         }
-      </td>
-    </tr>
 
-    <tr>
-      <td><b>Fleet</b></td>
-      <td>: ${item.fleet || "-"}</td>
-    </tr>
+        </span>
 
-    <tr>
-      <td><b>Kendaraan</b></td>
-      <td>: ${item.vehicle || "-"}</td>
-    </tr>
+    </div>
 
-    <tr>
-      <td><b>Dispatcher</b></td>
-      <td>: ${item.dispatcher || "-"}</td>
-    </tr>
+    <div class="info-row">
+        <span class="label">Fleet</span>
+        <span class="value">${item.fleet || "-"}</span>
+    </div>
 
-  </table>
+    <div class="info-row">
+        <span class="label">Kendaraan</span>
+        <span class="value">${item.vehicle || "-"}</span>
+    </div>
+
+    <div class="info-row">
+        <span class="label">Dispatcher</span>
+        <span class="value">${item.dispatcher || "-"}</span>
+    </div>
 
 </div>
-
 `;
 
 }

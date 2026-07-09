@@ -39,9 +39,17 @@ document
 // Cari nomor HP Indonesia
 const nomorHP = pemohon.match(/(?:\+62|62|0)8\d[\d\s-]{7,}/);
 
-if (!nomorHP) {
+// Hapus nomor HP dari teks
+const nama = pemohon
+  .replace(/(?:\+62|62|0)8\d[\d\s-]{7,}/g, "")
+  .trim();
 
-  alert("Silakan isi nama anda beserta nomor handphone.\n\nContoh:\nBudi 0852 1234 4321");
+// Validasi
+if (!nomorHP || nama.length < 2) {
+
+  alert(
+    "Silakan isi nama lengkap beserta nomor handphone.\n\nContoh:\nBudi Santoso 0852 1234 4321"
+  );
 
   submitBtn.disabled = false;
   submitBtn.textContent = "Kirim Permohonan";

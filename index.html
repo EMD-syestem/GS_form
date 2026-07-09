@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="id">
 
 <head>
@@ -8,15 +8,6 @@
   <title>Permohonan Kendaraan</title>
 
   <link rel="stylesheet" href="style.css">
-  
-   <!--  Favicon untuk Browser, Mobile, dan Desktop -->
-  <link rel="icon" type="image/png" sizes="16x16" href="https://i.postimg.cc/NMRDPgT5/GS-dispacer.jpg">
-  <link rel="icon" type="image/png" sizes="32x32" href="https://i.postimg.cc/NMRDPgT5/GS-dispacer.jpg">
-  <link rel="icon" type="image/png" sizes="48x48" href="https://i.postimg.cc/NMRDPgT5/GS-dispacer.jpg">
-  <link rel="icon" type="image/png" sizes="64x64" href="https://i.postimg.cc/NMRDPgT5/GS-dispacer.jpg">
-  <link rel="icon" type="image/png" sizes="180x180" https://i.postimg.cc/NMRDPgT5/GS-dispacer.jpg">
-  <link rel="shortcut icon" href="https://i.postimg.cc/NMRDPgT5/GS-dispacer.jpg" type="image/png">
-  
 </head>
 
 <body>
@@ -77,7 +68,7 @@
           
           <input type="text" id="fungsi" placeholder="Masukan nama fungsi/departement" required>
         </div>
-
+        
         <div class="form-group">
           <label for="jumlahkendaraan">
            Jumlah kendaraan yang digunakan
@@ -144,28 +135,63 @@
     type="submit"
     class="btn-submit">
 
-    Submit Permohonan
+    Simpan Permohonan
 
   </button>
 
-  <button
+ <button
     type="button"
     class="btn-check"
     onclick="openReservationModal()">
 
     Cek Status Reservasi
+ </button>
+          
+   <button
+    type="button"
+    class="btn-status"
+    onclick="openstatuskendaraan()">
 
-  </button>
+     Status Kendaraan
 
-       </div>
+</button>
+
+
+</div>
+
 
       </form>
 
     </div>
 
   </div>
+  
+  
 
-   <div id="reservationModal" class="reservation-modal">
+     <!-- ================= STATUS KENDARAAN ================= -->
+
+<div id="kendaraanModal" class="reservation-modal">
+
+    <div class="reservation-modal-content">
+
+        <div class="reservation-modal-header">
+
+            <h2>Status Kendaraan KRP POOL GS</h2>
+
+            <span class="reservation-close"
+                  onclick="closeKendaraanModal()">
+                &times;
+            </span>
+
+        </div>
+
+        <div id="kendaraanList"></div>
+
+    </div>
+
+</div>
+  
+  <div id="reservationModal" class="reservation-modal">
 
     <div class="reservation-modal-content">
 
@@ -231,10 +257,7 @@
 
  <script type="module" src="firebase.js"></script>
 <script src="script.js"></script>
-</body>
-
-</html>
-   
+ 
   </body>
   
-
+</html>

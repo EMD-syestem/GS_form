@@ -343,9 +343,15 @@ if (
   <div class="status-card rejected">
     <h3>🔴 Permohonan Ditolak</h3>
     <p>
-      Mohon maaf, seluruh kendaraan kami saat ini sedang digunakan
-      (<b>kendaraan full job</b>), sehingga permohonan reservasi anda tidak dapat diproses.
+      Mohon maaf, seluruh Armada kami saat ini sedang beroprasi
+      (<b>kendaraan full job</b>), sehingga permohonan reservasi anda tidak dapat diproses.     
     </p>
+    
+     <p>      
+     silakan di lakukan pengecakan di (<b>Status kendaraan</b>).
+     untuk pengecekan kendaraan yang stanby
+     </p>
+     
   </div>
   `;
 
@@ -402,58 +408,63 @@ for (const item of data.reservations) {
 
   <div style="text-align:center;">
 
-   <img
-src="${photoDriver}"
-class="driver-photo">
+    <img
+      src="${photoDriver}"
+      style="
+        width:120px;
+        height:160px;
+        object-fit:cover;
+        border-radius:8px;
+        border:2px solid #ccc;
+        margin-bottom:15px;
+      ">
 
     <h3>🟢 Driver & Kendaraan Sudah Disiapkan</h3>
+     <h4> Silakan Klik No Driver berikut </h4>
 
   </div>
 
- <div class="driver-info">
+  <table style="width:100%;">
 
-    <div class="info-row">
-        <span class="label">Driver</span>
-        <span class="value">${item.driver || "-"}</span>
-    </div>
+    <tr>
+      <td><b>Driver</b></td>
+      <td>: ${item.driver || "-"}</td>
+    </tr>
 
-    <div class="info-row">
-        <span class="label">Driver Contact</span>
-
-        <span class="value">
-
+    <tr>
+      <td><b>Driver Contact</b></td>
+      <td>:
         ${
-        driverContact
-        ? `
-        <a href="https://wa.me/${driverContact.replace(/^0/,"62").replace(/\D/g,"")}?text=${encodeURIComponent(`Halo Mas ${item.driver}, saya diarahkan oleh dispatcher terkait reservasi kendaraan.`)}">
-
-        ${driverContact}
-
-        </a>
-        `
-        : "-"
+          driverContact
+            ? `<a href="https://wa.me/${driverContact.replace(/^0/, "62").replace(/\D/g, "")}?text=${encodeURIComponent(`Halo Mas ${item.driver}, saya diarahkan oleh dispatcher kepada Mas ${item.driver} terkait reservasi kendaraan.`)}"
+                 target="_blank"
+                 style="color:#25D366;font-weight:bold;text-decoration:none;">
+                 ${driverContact}
+               </a>`
+            : "-"
         }
+      </td>
+    </tr>
 
-        </span>
+    <tr>
+      <td><b>Fleet</b></td>
+      <td>: ${item.fleet || "-"}</td>
+    </tr>
 
-    </div>
+    <tr>
+      <td><b>Kendaraan</b></td>
+      <td>: ${item.vehicle || "-"}</td>
+    </tr>
 
-    <div class="info-row">
-        <span class="label">Fleet</span>
-        <span class="value">${item.fleet || "-"}</span>
-    </div>
+    <tr>
+      <td><b>Dispatcher</b></td>
+      <td>: ${item.dispatcher || "-"}</td>
+    </tr>
 
-    <div class="info-row">
-        <span class="label">Kendaraan</span>
-        <span class="value">${item.vehicle || "-"}</span>
-    </div>
-
-    <div class="info-row">
-        <span class="label">Dispatcher</span>
-        <span class="value">${item.dispatcher || "-"}</span>
-    </div>
+  </table>
 
 </div>
+
 `;
 
 }
@@ -471,3 +482,154 @@ result.innerHTML = html;
     `;
   }
 }
+
+async function openstatuskendaraan() {
+
+    const daftarKendaraan = [
+        "JBI-05 BH 8578 NA",       
+        "JBI-07 BH 8582 NA",
+        "JBI-08 BH 8629 NA",
+        "JBI-09 BH 8610 NA",
+        "JBI-17 BH 8634 NA",
+        "JBI-21 BH 8621 NA",
+        "JBI-27 BH 8586 NA",
+        "JBI-48 BH 8625 NA",
+        "JBI-062 BH 8631 NA",
+        "JBI-64 BH 8572 NA",
+        "PSU-11 BK 1076 PZ",
+        "PHR1-04 BH 1289 YR",
+        "PHR1-17 BH 1271 YR",
+        "PHR1-22 BH 7419 AI",
+        "PHR1-23 BH 7420 AI"
+    ];
+
+    const modal = document.getElementById("kendaraanModal");
+    const list = document.getElementById("kendaraanList");
+
+    modal.style.display = "block";
+
+    list.innerHTML = `
+        <div style="padding:35px;text-align:center;">
+            <div class="loader"></div>
+            <div style="margin-top:15px;font-weight:600;color:#607d8b;">
+                Mengambil data kendaraan...
+            </div>
+        </div>
+    `;
+
+    const kendaraanAktif = [];
+
+    const statusOnJob = [
+        "open",
+        "on job",
+        "progress",
+        "running"
+    ];
+
+    try {
+
+        const response = await fetch(
+            "https://script.google.com/macros/s/AKfycbwNb9HlH8Xa5chSINIUb7Ti1OjA_4PoAqJ5p3u6qbTbbe-w39JIlPgK-J6QnRreFvUwdA/exec?t=" + Date.now()
+        );
+
+        const data = await response.json();
+
+        data.forEach(item => {
+
+            const fleet = String(item.fleetCode || "").trim();
+
+            const status = String(item.status || "")
+                .trim()
+                .toLowerCase();
+
+            if (
+                statusOnJob.includes(status) &&
+                !kendaraanAktif.includes(fleet)
+            ) {
+                kendaraanAktif.push(fleet);
+            }
+
+        });
+
+        const sekarang = new Date();
+
+        const tanggalUpdate =
+            String(sekarang.getDate()).padStart(2, "0") +
+            "-" +
+            String(sekarang.getMonth() + 1).padStart(2, "0") +
+            "-" +
+            sekarang.getFullYear();
+
+        list.innerHTML = `
+            <div class="kendaraan-header">
+                <div> No Lambung</div>
+                <div style="text-align:center;">Update</div>
+                <div style="text-align:right;">Status</div>
+            </div>
+        `;
+
+        daftarKendaraan.forEach(kendaraan => {
+
+            const aktif = kendaraanAktif.includes(kendaraan);
+
+            list.innerHTML += `
+
+                <div class="kendaraan-item">
+
+                    <div class="fleet-col">
+                         ${kendaraan}
+                    </div>
+
+                    <div class="tanggal-col">
+                        ${tanggalUpdate}
+                    </div>
+
+                    <div class="status ${aktif ? "status-on" : "status-standby"}">
+
+                        <div class="dot ${aktif ? "onjob" : "standby"}"></div>
+
+                        <strong>${aktif ? "ON JOB" : "STANDBY"}</strong>
+
+                    </div>
+
+                </div>
+
+            `;
+
+        });
+
+    } catch (err) {
+
+        console.error(err);
+
+        list.innerHTML = `
+            <div style="
+                padding:40px;
+                text-align:center;
+                color:#e53935;
+                font-weight:600;
+            ">
+                ❌ Gagal mengambil data kendaraan.
+            </div>
+        `;
+
+    }
+
+}
+
+function closeKendaraanModal() {
+
+    document.getElementById("kendaraanModal").style.display = "none";
+
+}
+window.addEventListener("click", function(e){
+
+    const modal = document.getElementById("kendaraanModal");
+
+    if(e.target === modal){
+
+        closeKendaraanModal();
+
+    }
+
+});
